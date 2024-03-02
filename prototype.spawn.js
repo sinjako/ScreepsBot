@@ -21,6 +21,7 @@ StructureSpawn.prototype.spawnCreepsIfNecessary =
 
         // if no harvesters are left AND either no miners or no lorries are left
         //  create a backup creep
+        console.log(name);
         if (numberOfCreeps['harvester'] == 0 && numberOfCreeps['lorry'] == 0) {
             // if there are still miners or enough energy in Storage left
             if (numberOfCreeps['miner'] > 0 ||
@@ -35,6 +36,7 @@ StructureSpawn.prototype.spawnCreepsIfNecessary =
             }
         }
         // if no backup creep is required
+
         else {
             // check if all sources have miners
             let sources = room.find(FIND_SOURCES);
@@ -56,7 +58,7 @@ StructureSpawn.prototype.spawnCreepsIfNecessary =
                 }
             }
         }
-
+        console.log(name);
         // if none of the above caused a spawn command check for other roles
         if (name == undefined) {
             for (let role of listOfRoles) {
@@ -83,6 +85,7 @@ StructureSpawn.prototype.spawnCreepsIfNecessary =
                 }
             }
         }
+        console.log(name);
         
         // if none of the above caused a spawn command check for LongDistanceHarvesters
         /** @type {Object.<string, number>} */
@@ -99,6 +102,7 @@ StructureSpawn.prototype.spawnCreepsIfNecessary =
             }
         }
 
+        console.log(name);
         // print name to console if spawning was a success
         if (name != undefined && _.isString(name)) {
             console.log(this.name + " spawned new creep: " + name + " (" + Game.creeps[name].memory.role + ")");
