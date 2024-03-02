@@ -8,13 +8,14 @@ StructureSpawn.prototype.spawnCreepsIfNecessary =
         // find all creeps in room
         /** @type {Array.<Creep>} */
         let creepsInRoom = room.find(FIND_MY_CREEPS);
-        
+        console.log(creepsInRoom)
         // count the number of creeps alive for each role in this room
         // _.sum will count the number of properties in Game.creeps filtered by the
         //  arrow function, which checks for the creep being a specific role
         /** @type {Object.<string, number>} */
         let numberOfCreeps = {};
         for (let role of listOfRoles) {
+            console.log(numberOfCreeps)
             numberOfCreeps[role] = _.sum(creepsInRoom, (c) => c.memory.role == role);
         }
         let maxEnergy = room.energyCapacityAvailable;
@@ -131,7 +132,7 @@ StructureSpawn.prototype.createCustomCreep =
         }
 
         // create creep with the created body and the given role
-        return this.spawnCreep(body, roleName + '_' + Game.time, { memory: { role: roleName, working: false }});
+        return this.spawnCreepManager(body, roleName + '_' + Game.time, { memory: { role: roleName, working: false }});
     };
 
 // create a new function for StructureSpawn
@@ -157,7 +158,7 @@ StructureSpawn.prototype.createLongDistanceHarvester =
         }
 
         // create creep with the created body
-        return this.spawnCreep(body, roleName + '_' + Game.time, { memory: {
+        return this.spawnCreepManager(body, roleName + '_' + Game.time, { memory: {
             role: 'longDistanceHarvester',
             home: home,
             target: target,
@@ -169,14 +170,14 @@ StructureSpawn.prototype.createLongDistanceHarvester =
 // create a new function for StructureSpawn
 StructureSpawn.prototype.createClaimer =
     function (target) {
-        return this.spawnCreep([CLAIM, MOVE], 'claimer_' + Game.time, {memory: { role: 'claimer', target: target }});
+        return this.spawnCreepManager([CLAIM, MOVE], 'claimer_' + Game.time, {memory: { role: 'claimer', target: target }});
     };
 
 // create a new function for StructureSpawn
 StructureSpawn.prototype.createMiner =
     function (sourceId) {
-        //return this.spawnCreep([CLAIM, MOVE], 'claimer_' + Game.time, {memory: { role: 'claimer', target: target }});
-        return this.spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE], 'miner_' + Game.time,
+        //return this.spawnCreepManager([CLAIM, MOVE], 'claimer_' + Game.time, {memory: { role: 'claimer', target: target }});
+        return this.spawnCreepManager([WORK, WORK, WORK, WORK, WORK, MOVE], 'miner_' + Game.time,
                                 {memory: { role: 'miner', sourceId: sourceId }});
     };
 
@@ -196,5 +197,32 @@ StructureSpawn.prototype.createLorry =
         }
 
         // create creep with the created body and the role 'lorry'
-        return this.spawnCreep(body, 'lorry_' + Game.time, {memory: { role: 'lorry', working: false }});
+        return this.spawnCreepManager(body, 'lorry_' + Game.time, {memory: { role: 'lorry', working: false }});
     };
+
+StructureSpawn.prototype.createLorry =
+    function (energy) {
+        // create a body with twice as many CARRY as MOVE parts
+        var numberOfParts = Math.floor(energy / 150);
+        // make sure the creep is not too big (more than 50 parts)
+        numberOfParts = Math.min(numberOfParts, Math.floor(50 / 3));
+        var body = [];
+        for (let i = 0; i < numberOfParts * 2; i++) {
+            body.push(CARRY);
+        }
+        for (let i = 0; i < numberOfParts; i++) {
+            body.push(MOVE);
+        }
+
+        // create creep with the created body and the role 'lorry'
+        return this.spawnCreepManager(body, 'lorry_' + Game.time, {memory: { role: 'lorry', working: false }});
+    };
+
+
+StructureSpawn.prototype.spawnCreepManager = function (body, roleName) {
+    // Add custom logic - logging the spawn
+    console.log(`Spawned creep with role ${roleName} at ${this.pos}`);
+
+    // Call the original spawnCreep method with the provided arguments
+    return this.spawnCreep(body, roleName);
+};
