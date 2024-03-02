@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/DefaultScreepsBot.iml" filepath="$PROJECT_DIR$/.idea/DefaultScreepsBot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Default.iml" filepath="$PROJECT_DIR$/.idea/Default.iml" />
     </modules>
   </component>
 </project>
