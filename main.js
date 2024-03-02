@@ -13,7 +13,7 @@ module.exports.loop = function() {
         }
     }
 
-    // for each creeps
+    // for each creepsasd
     for (let name in Game.creeps) {
         // run creep logic
         Game.creeps[name].runRole();
